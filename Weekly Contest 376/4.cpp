@@ -60,3 +60,36 @@
 
         return ans;
     }
+
+    // sIMILAR Question->1838. Frequency of the Most Frequent Element
+    class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        int i=0;
+        int j=0;
+        int ans=1;
+        int n=nums.size();
+        vector<long long> prefixSum(n,0);
+        prefixSum[0]=nums[0];
+
+        for(int i=1;i<n;i++){
+            prefixSum[i]=prefixSum[i-1]+nums[i];
+        }
+        long long actualSum=0;
+        for(j=0;j<nums.size();j++){
+            long long hypoSum=(j-i+1)*(long long)nums[j];
+            actualSum+=nums[j];
+            int operation=hypoSum-actualSum;
+
+            while(operation>k){
+                actualSum-=nums[i];
+                i++;
+                hypoSum=(j-i+1)*(long long)nums[j];
+                operation=hypoSum-actualSum;
+            }
+            ans=max(ans,j-i+1);
+        }
+
+        return ans;
+    }
+};
